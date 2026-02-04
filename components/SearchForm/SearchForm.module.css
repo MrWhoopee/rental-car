@@ -1,0 +1,77 @@
+.button {
+  padding-left: 51px;
+  padding-right: 51px;
+}
+
+.form {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: end;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
+  margin-top: 84px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.33333;
+  color: var(--gray);
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 32px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--main);
+  border-radius: 12px;
+  padding: 12px 16px;
+  width: 204px;
+  height: 44px;
+  background-color: var(--inputs);
+  border: none;
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 32px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--main);
+
+  padding: 12px 16px;
+  width: 160px;
+  background-color: var(--inputs);
+  border: none;
+}
+
+.inputLeft {
+  border-radius: 12px 0 0 12px;
+  border-right: 2px solid var(--gray-light);
+}
+
+.inputRight {
+  border-radius: 0 12px 12px 0;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+}

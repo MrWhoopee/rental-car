@@ -1,0 +1,46 @@
+.card {
+  width: 276px;
+  height: 424px;
+  position: relative;
+}
+
+.heart {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  cursor: pointer;
+  display: flex;
+}
+
+.img {
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 11px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--main);
+  margin-bottom: 8px;
+}
+
+.model {
+  color: var(--button);
+}
+
+.description {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.33333;
+  color: var(--gray);
+  margin-bottom: 28px;
+}
+
+.button {
+  width: 100%;
+}

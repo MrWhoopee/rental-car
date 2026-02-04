@@ -1,0 +1,23 @@
+.navList {
+  display: flex;
+  gap: 32px;
+}
+
+.navItem {
+  :hover {
+    color: var(--button-hover);
+  }
+}
+
+.navLink {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--main);
+  transition: color var(--transition);
+}
+
+.active {
+  color: var(--button);
+}
