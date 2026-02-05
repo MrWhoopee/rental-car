@@ -88,6 +88,7 @@ export default function CarForm() {
       toast.success("Thank you! Our manager will contact you.");
       resetForm();
     } catch (error) {
+      console.log(error);
       toast.error("Something went wrong. Try again.");
     } finally {
       setSubmitting(false);
