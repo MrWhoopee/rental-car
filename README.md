@@ -66,11 +66,11 @@ RentalCar is a modern web application designed for a car rental company. Users c
 
 ## 👤 Author
 
-**[Your Name/Username]**
+**MrWhoopee**
 
-- [GitHub](https://github.com/your-username)
-- [LinkedIn](https://www.linkedin.com/in/your-profile)
+- [GitHub](https://github.com/MrWhoopee)
+- [LinkedIn](https://www.linkedin.com/in/artemii-holovko-146490260/))
 
 ## 📄 License
 
-This project is open-source and available under the [MIT License](LICENSE).
+This project is open-source
