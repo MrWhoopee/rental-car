@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getCars } from "@/lib/apiFn";
@@ -12,27 +12,29 @@ import Loader from "@/components/Loader/Loader";
 
 export default function CatalogClient() {
   const searchParams = useSearchParams();
+  const { cars, page, setCars, setPage, resetCars, setFilters } = useCarStore();
 
-  const { cars, page, filters, setCars, setPage, setFilters } = useCarStore();
-
-  useEffect(() => {
-    const urlFilters = {
+  const filters = useMemo(
+    () => ({
       brand: searchParams.get("brand") || undefined,
       rentalPrice: searchParams.get("rentalPrice") || undefined,
       minMileage: searchParams.get("minMileage") || undefined,
       maxMileage: searchParams.get("maxMileage") || undefined,
-    };
+    }),
+    [searchParams],
+  );
 
-    if (JSON.stringify(urlFilters) !== JSON.stringify(filters)) {
-      setFilters(urlFilters);
-    }
-  }, [searchParams, filters, setFilters]);
+  useEffect(() => {
+    resetCars();
+    setPage(1);
+    setFilters(filters);
+  }, [searchParams, resetCars, setPage, setFilters, filters]);
 
-  const { data, isFetching, isError } = useQuery({
+  const { data, isFetching, isPlaceholderData } = useQuery({
     queryKey: ["cars", filters, page],
     queryFn: () => getCars(page, filters),
-    refetchOnWindowFocus: false,
-    placeholderData: (previousData) => previousData,
+    placeholderData: (prev) => prev,
+    staleTime: 5000,
   });
 
   useEffect(() => {
@@ -41,11 +43,12 @@ export default function CatalogClient() {
     }
   }, [data, page, setCars]);
 
-  const handleLoadMore = () => {
-    setPage(page + 1);
-  };
-
   const hasMore = data ? page < data.totalPages : false;
+
+  const isNotFound =
+    !isFetching &&
+    !isPlaceholderData &&
+    (data?.cars.length === 0 || cars.length === 0);
 
   return (
     <div className={css.container}>
@@ -59,12 +62,12 @@ export default function CatalogClient() {
         </div>
       )}
 
-      {isError && (
-        <p className={css.error}>Something went wrong... Please try again.</p>
+      {isNotFound && !isFetching && (
+        <p className={css.empty}>No cars found matching your criteria.</p>
       )}
 
-      {hasMore && !isFetching && (
-        <button className={css.loadMoreBtn} onClick={handleLoadMore}>
+      {hasMore && !isFetching && cars.length > 0 && (
+        <button className={css.loadMoreBtn} onClick={() => setPage(page + 1)}>
           Load more
         </button>
       )}
