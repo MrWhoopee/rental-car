@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getCars } from "@/lib/apiFn";
 import { useCarStore } from "@/store/useCarStore";
@@ -9,18 +9,14 @@ import CarList from "@/components/CarList/CarList";
 import SearchForm from "@/components/SearchForm/SearchForm";
 import css from "./page.module.css";
 import Loader from "@/components/Loader/Loader";
+import { parseSearchParams } from "@/lib/filters";
 
 export default function CatalogClient() {
   const searchParams = useSearchParams();
   const { cars, page, setCars, setPage, resetCars, setFilters } = useCarStore();
 
   const filters = useMemo(
-    () => ({
-      brand: searchParams.get("brand") || undefined,
-      rentalPrice: searchParams.get("rentalPrice") || undefined,
-      minMileage: searchParams.get("minMileage") || undefined,
-      maxMileage: searchParams.get("maxMileage") || undefined,
-    }),
+    () => parseSearchParams(Object.fromEntries(searchParams.entries())),
     [searchParams],
   );
 
@@ -33,8 +29,8 @@ export default function CatalogClient() {
   const { data, isFetching, isPlaceholderData } = useQuery({
     queryKey: ["cars", filters, page],
     queryFn: () => getCars(page, filters),
-    placeholderData: (prev) => prev,
-    staleTime: 5000,
+    placeholderData: keepPreviousData,
+    // staleTime: 5000,
   });
 
   useEffect(() => {
@@ -46,9 +42,7 @@ export default function CatalogClient() {
   const hasMore = data ? page < data.totalPages : false;
 
   const isNotFound =
-    !isFetching &&
-    !isPlaceholderData &&
-    (data?.cars.length === 0 || cars.length === 0);
+    !isFetching && !isPlaceholderData && data?.cars.length === 0;
 
   return (
     <div className={css.container}>

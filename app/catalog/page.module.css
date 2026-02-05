@@ -24,3 +24,10 @@
     border-color: var(--button-hover);
   }
 }
+
+.empty {
+  text-align: center;
+  color: var(--grey);
+  font-size: 30px;
+  font-weight: 500;
+}

@@ -1,8 +1,8 @@
 import { FilterParams } from "@/type/types";
 
-export function parseSearchParams(
-  searchParams: Record<string, string | string[] | undefined>,
-): FilterParams {
+export function parseSearchParams(searchParams: {
+  [key: string]: string | string[] | undefined;
+}): FilterParams {
   return {
     brand: (searchParams.brand as string) || undefined,
     rentalPrice: (searchParams.rentalPrice as string) || undefined,
