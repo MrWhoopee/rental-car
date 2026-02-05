@@ -15,8 +15,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Rental Car",
-  description: "Rental Car App",
+  title: {
+    default: "RentalCar - Reliable Car Rental Service",
+    template: "%s | RentalCar",
+  },
+  description:
+    "Find your perfect rental car with MyRental - reliable and budget-friendly rentals for any journey in Ukraine.",
+  keywords: ["car rental", "rent a car", "Ukraine", "budget rentals", "auto"],
 };
 
 import Providers from "./providers";

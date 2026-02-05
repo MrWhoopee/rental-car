@@ -7,6 +7,12 @@ import {
 import { getCars } from "@/lib/apiFn";
 import { parseSearchParams } from "@/lib/filters";
 import CatalogClient from "./CatalogClient";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Catalog",
+  description: "Browse our wide range of available cars for rent.",
+};
 
 interface Props {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
