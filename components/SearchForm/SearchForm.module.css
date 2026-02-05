@@ -45,16 +45,10 @@
 }
 
 .input {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  gap: 32px;
   font-weight: 500;
   font-size: 16px;
   line-height: 1.25;
   color: var(--main);
-
   padding: 12px 16px;
   width: 160px;
   background-color: var(--inputs);
@@ -64,12 +58,13 @@
 
 .inputLeft {
   border-radius: 12px 0 0 12px;
-  /* зробив трохи більший бордер, а то виглядає не дуже */
-  border-right: 2px solid var(--gray-light);
+  border-right: 1px solid var(--gray-light);
+  padding-left: 58px;
 }
 
 .inputRight {
   border-radius: 0 12px 12px 0;
+  padding-left: 40px;
 }
 
 .inputGroup {
@@ -93,10 +88,6 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 1.25;
-}
-
-.inputWrapper input {
-  padding-left: 60px;
 }
 
 /* Далі спробую використати react-select */
