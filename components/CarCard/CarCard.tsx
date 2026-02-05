@@ -3,15 +3,42 @@ import Image from "next/image";
 import css from "./CarCard.module.css";
 import { useRouter } from "next/navigation";
 import { formatMileage } from "@/lib/utils/formatters";
+import { useCarStore } from "@/store/useCarStore";
+import { useState, useEffect } from "react";
 export default function CarCard({ car }: { car: Car }) {
   const address = car.address.split(",");
   const router = useRouter();
+
+  const favorites = useCarStore((state) => state.favorites);
+  const toggleFavorite = useCarStore((state) => state.toggleFavorite);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    // цікаве рішення, можна зробити в Zustand чек сердечок, але так цікавіше
+    const frame = requestAnimationFrame(() => {
+      setIsMounted(true);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
+  const isFavorite = isMounted && favorites.includes(car.id);
+  const handleHeartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(car.id);
+  };
+
   return (
     <div className={css.card}>
-      <span className={css.heart}>
-        <svg className={css.heartIcon} width="16" height="16">
-          <use href="/sprite.svg#heart"></use>
-        </svg>
+      <span className={css.heart} onClick={handleHeartClick}>
+        {isFavorite ? (
+          <svg className={css.heartIcon} width="16" height="16">
+            <use href="/sprite.svg#heartFull"></use>
+          </svg>
+        ) : (
+          <svg className={css.heartIcon} width="16" height="16">
+            <use href="/sprite.svg#heart"></use>
+          </svg>
+        )}
       </span>
       <Image
         priority

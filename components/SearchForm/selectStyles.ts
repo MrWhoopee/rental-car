@@ -47,6 +47,7 @@ export const customStyles: StylesConfig<Option, false> = {
     borderRadius: "12px",
     boxShadow: "0 4px 36px 0 rgba(0, 0, 0, 0.02)",
     background: "var(--white)",
+    zIndex: 999,
   }),
   menuList: (provided) => ({
     ...provided,

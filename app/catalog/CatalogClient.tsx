@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { getCars } from "@/lib/apiFn";
@@ -13,27 +13,26 @@ import Loader from "@/components/Loader/Loader";
 export default function CatalogClient() {
   const searchParams = useSearchParams();
 
-  const { cars, page, setCars, setPage, resetCars } = useCarStore();
+  const { cars, page, filters, setCars, setPage, setFilters } = useCarStore();
 
-  const filters = useMemo(
-    () => ({
+  useEffect(() => {
+    const urlFilters = {
       brand: searchParams.get("brand") || undefined,
       rentalPrice: searchParams.get("rentalPrice") || undefined,
       minMileage: searchParams.get("minMileage") || undefined,
       maxMileage: searchParams.get("maxMileage") || undefined,
-    }),
-    [searchParams],
-  );
+    };
 
-  useEffect(() => {
-    resetCars();
-  }, [filters, resetCars]);
+    if (JSON.stringify(urlFilters) !== JSON.stringify(filters)) {
+      setFilters(urlFilters);
+    }
+  }, [searchParams, filters, setFilters]);
 
   const { data, isFetching, isError } = useQuery({
     queryKey: ["cars", filters, page],
     queryFn: () => getCars(page, filters),
-
     refetchOnWindowFocus: false,
+    placeholderData: (previousData) => previousData,
   });
 
   useEffect(() => {

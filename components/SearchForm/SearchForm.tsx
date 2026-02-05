@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Select from "react-select";
 import { NumericFormat } from "react-number-format";
 import { useQuery } from "@tanstack/react-query";
 import { getBrands } from "@/lib/apiFn";
+import { useCarStore } from "@/store/useCarStore";
 import css from "./SearchForm.module.css";
 import { customStyles } from "./selectStyles";
 
@@ -16,28 +17,22 @@ interface Option {
 
 export default function SearchForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const { filters, setFilters } = useCarStore();
 
-  // стейти щоб фільтри не зникали
+  // стейти для форми
   const [brand, setBrand] = useState<Option | null>(
-    searchParams.get("brand")
-      ? { value: searchParams.get("brand")!, label: searchParams.get("brand")! }
-      : null,
+    filters.brand ? { value: filters.brand, label: filters.brand } : null,
   );
   const [price, setPrice] = useState<Option | null>(
-    searchParams.get("rentalPrice")
+    filters.rentalPrice
       ? {
-          value: searchParams.get("rentalPrice")!,
-          label: searchParams.get("rentalPrice")!,
+          value: filters.rentalPrice,
+          label: filters.rentalPrice,
         }
       : null,
   );
-  const [mileageFrom, setMileageFrom] = useState(
-    searchParams.get("minMileage") || "",
-  );
-  const [mileageTo, setMileageTo] = useState(
-    searchParams.get("maxMileage") || "",
-  );
+  const [mileageFrom, setMileageFrom] = useState(filters.minMileage || "");
+  const [mileageTo, setMileageTo] = useState(filters.maxMileage || "");
 
   const { data: brandList } = useQuery({
     queryKey: ["brands"],
@@ -64,12 +59,22 @@ export default function SearchForm() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const params = new URLSearchParams();
 
-    if (brand?.value) params.set("brand", brand.value);
-    if (price?.value) params.set("rentalPrice", price.value);
-    if (mileageFrom) params.set("minMileage", mileageFrom);
-    if (mileageTo) params.set("maxMileage", mileageTo);
+    const newFilters = {
+      brand: brand?.value || undefined,
+      rentalPrice: price?.value || undefined,
+      minMileage: mileageFrom || undefined,
+      maxMileage: mileageTo || undefined,
+    };
+
+    setFilters(newFilters);
+
+    const params = new URLSearchParams();
+    if (newFilters.brand) params.set("brand", newFilters.brand);
+    if (newFilters.rentalPrice)
+      params.set("rentalPrice", newFilters.rentalPrice);
+    if (newFilters.minMileage) params.set("minMileage", newFilters.minMileage);
+    if (newFilters.maxMileage) params.set("maxMileage", newFilters.maxMileage);
 
     router.push(`/catalog?${params.toString()}`);
   };
@@ -109,7 +114,7 @@ export default function SearchForm() {
             <NumericFormat
               className={`${css.input} ${css.inputLeft}`}
               value={mileageFrom}
-              onValueChange={(v) => setMileageFrom(v.value)} // Чисте значення без ком
+              onValueChange={(v) => setMileageFrom(v.value)}
               thousandSeparator=","
             />
           </div>
