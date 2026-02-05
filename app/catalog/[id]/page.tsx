@@ -4,6 +4,26 @@ import css from "./page.module.css";
 import CarForm from "@/components/CarForm/CarForm";
 import { formatMileage } from "@/lib/utils/formatters";
 import MakeCondition from "@/components/MakeCondition/MakeCondition";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const { data } = await apiNext.get(`/cars/${id}`);
+    return {
+      title: `${data.brand} ${data.model} (${data.year})`,
+      description: data.description,
+    };
+  } catch {
+    return {
+      title: "Car Details",
+    };
+  }
+}
 
 export default async function CarDetailsPage({
   params,
