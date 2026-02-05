@@ -12,7 +12,6 @@ export default async function CarDetailsPage({
 }) {
   const { id } = await params;
   const { data } = await apiNext.get(`/cars/${id}`);
-  console.log(data);
   const shortId = data.id.slice(0, 4).toUpperCase();
   const address = data.address.split(",");
 
