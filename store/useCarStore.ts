@@ -1,4 +1,3 @@
-// store/useCarStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Car, FilterParams } from "@/type/types";
@@ -15,31 +14,19 @@ interface CarState {
   resetCars: () => void;
 }
 
-const initialFilters: FilterParams = {
-  brand: undefined,
-  rentalPrice: undefined,
-  minMileage: undefined,
-  maxMileage: undefined,
-};
-
 export const useCarStore = create<CarState>()(
   persist(
     (set) => ({
       cars: [],
       favorites: [],
       page: 1,
-      filters: initialFilters,
+      filters: {},
       setCars: (newCars, append) =>
         set((state) => ({
           cars: append ? [...state.cars, ...newCars] : newCars,
         })),
-      setPage: (page) => set({ page }),
-      setFilters: (newFilters) =>
-        set(() => ({
-          filters: newFilters,
-          page: 1,
-          cars: [],
-        })),
+      setPage: (newPage) => set({ page: newPage }),
+      setFilters: (newFilters) => set({ filters: newFilters }),
       toggleFavorite: (carId) =>
         set((state) => ({
           favorites: state.favorites.includes(carId)
@@ -49,7 +36,7 @@ export const useCarStore = create<CarState>()(
       resetCars: () => set({ cars: [], page: 1 }),
     }),
     {
-      name: "favorites-storage",
+      name: "car-storage",
       partialize: (state) => ({ favorites: state.favorites }),
     },
   ),

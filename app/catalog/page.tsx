@@ -25,7 +25,7 @@ export default async function FilteredCatalogPage({ searchParams }: Props) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["cars", filters],
+    queryKey: ["cars", filters, 1],
     queryFn: () => getCars(1, filters),
   });
 

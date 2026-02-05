@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Select from "react-select";
 import { NumericFormat } from "react-number-format";
 import { useQuery } from "@tanstack/react-query";
@@ -16,23 +16,32 @@ interface Option {
 }
 
 export default function SearchForm() {
-  const router = useRouter();
-  const { filters, setFilters } = useCarStore();
+  const searchParams = useSearchParams();
 
-  // стейти для форми
-  const [brand, setBrand] = useState<Option | null>(
-    filters.brand ? { value: filters.brand, label: filters.brand } : null,
+  return <SearchFormContent key={searchParams.toString()} />;
+}
+
+function SearchFormContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { setFilters, resetCars, setPage } = useCarStore();
+
+  const [brand, setBrand] = useState<Option | null>(() => {
+    const b = searchParams.get("brand");
+    return b ? { value: b, label: b } : null;
+  });
+
+  const [price, setPrice] = useState<Option | null>(() => {
+    const p = searchParams.get("rentalPrice");
+    return p ? { value: p, label: p } : null;
+  });
+
+  const [mileageFrom, setMileageFrom] = useState(
+    () => searchParams.get("minMileage") || "",
   );
-  const [price, setPrice] = useState<Option | null>(
-    filters.rentalPrice
-      ? {
-          value: filters.rentalPrice,
-          label: filters.rentalPrice,
-        }
-      : null,
+  const [mileageTo, setMileageTo] = useState(
+    () => searchParams.get("maxMileage") || "",
   );
-  const [mileageFrom, setMileageFrom] = useState(filters.minMileage || "");
-  const [mileageTo, setMileageTo] = useState(filters.maxMileage || "");
 
   const { data: brandList } = useQuery({
     queryKey: ["brands"],
@@ -67,14 +76,18 @@ export default function SearchForm() {
       maxMileage: mileageTo || undefined,
     };
 
-    setFilters(newFilters);
-
     const params = new URLSearchParams();
     if (newFilters.brand) params.set("brand", newFilters.brand);
     if (newFilters.rentalPrice)
       params.set("rentalPrice", newFilters.rentalPrice);
     if (newFilters.minMileage) params.set("minMileage", newFilters.minMileage);
     if (newFilters.maxMileage) params.set("maxMileage", newFilters.maxMileage);
+
+    if (params.toString() === searchParams.toString()) return;
+
+    resetCars();
+    setPage(1);
+    setFilters(newFilters);
 
     router.push(`/catalog?${params.toString()}`);
   };
@@ -84,25 +97,28 @@ export default function SearchForm() {
       <div className={css.group}>
         <label className={css.label}>Car brand</label>
         <Select
+          instanceId="brand-select"
           options={brandOptions}
           styles={customStyles}
           value={brand}
           onChange={(opt) => setBrand(opt as Option)}
           placeholder="Choose a brand"
-          isSearchable
         />
       </div>
 
       <div className={css.group}>
         <label className={css.label}>Price / 1 hour</label>
         <Select
+          instanceId="price-select"
           options={priceOptions}
           styles={customStyles}
           value={price}
           onChange={(opt) => setPrice(opt as Option)}
           placeholder="Choose a price"
           formatOptionLabel={(opt, { context }) =>
-            context === "value" ? `To $${opt.label}` : opt.label
+            context === "value" && opt.value !== ""
+              ? `To $${opt.label}`
+              : opt.label
           }
         />
       </div>
@@ -115,7 +131,8 @@ export default function SearchForm() {
               className={`${css.input} ${css.inputLeft}`}
               value={mileageFrom}
               onValueChange={(v) => setMileageFrom(v.value)}
-              thousandSeparator=","
+              thousandSeparator=" "
+              placeholder=" "
             />
           </div>
           <div className={css.inputWrapper} data-prefix="To">
@@ -123,7 +140,8 @@ export default function SearchForm() {
               className={`${css.input} ${css.inputRight}`}
               value={mileageTo}
               onValueChange={(v) => setMileageTo(v.value)}
-              thousandSeparator=","
+              thousandSeparator=" "
+              placeholder=" "
             />
           </div>
         </div>
