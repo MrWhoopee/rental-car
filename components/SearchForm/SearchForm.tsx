@@ -131,7 +131,7 @@ function SearchFormContent() {
               className={`${css.input} ${css.inputLeft}`}
               value={mileageFrom}
               onValueChange={(v) => setMileageFrom(v.value)}
-              thousandSeparator=" "
+              thousandSeparator=","
               placeholder=" "
             />
           </div>
@@ -140,7 +140,7 @@ function SearchFormContent() {
               className={`${css.input} ${css.inputRight}`}
               value={mileageTo}
               onValueChange={(v) => setMileageTo(v.value)}
-              thousandSeparator=" "
+              thousandSeparator=","
               placeholder=" "
             />
           </div>
