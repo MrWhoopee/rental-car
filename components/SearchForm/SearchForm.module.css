@@ -59,10 +59,12 @@
   width: 160px;
   background-color: var(--inputs);
   border: none;
+  outline: none;
 }
 
 .inputLeft {
   border-radius: 12px 0 0 12px;
+  /* зробив трохи більший бордер, а то виглядає не дуже */
   border-right: 2px solid var(--gray-light);
 }
 
@@ -75,3 +77,26 @@
   flex-direction: row;
   gap: 0px;
 }
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputWrapper::before {
+  content: attr(data-prefix);
+  position: absolute;
+  left: 16px;
+  pointer-events: none;
+  color: var(--main);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.inputWrapper input {
+  padding-left: 60px;
+}
+
+/* Далі спробую використати react-select */

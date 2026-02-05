@@ -1,4 +1,3 @@
-import { getCars } from "@/lib/apiFn";
 import Link from "next/link";
 import css from "./page.module.css";
 

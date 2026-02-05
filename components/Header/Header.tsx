@@ -6,12 +6,20 @@ import Link from "next/link";
 export default function Header() {
   return (
     <header className={css.header}>
-      <div className={css.logo}>
-        <Link href="/">
-          <Image src="/logo.svg" alt="Logo" width={104} height={16} priority />
-        </Link>
+      <div className={css.container}>
+        <div className={css.logo}>
+          <Link href="/">
+            <Image
+              src="/logo.svg"
+              alt="Logo"
+              width={104}
+              height={16}
+              priority
+            />
+          </Link>
+        </div>
+        <HeaderNav />
       </div>
-      <HeaderNav />
     </header>
   );
 }

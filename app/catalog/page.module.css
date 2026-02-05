@@ -1,0 +1,26 @@
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  text-align: center;
+  color: black;
+}
+
+.loadMoreBtn {
+  border: 1px solid var(--button);
+  border-radius: 12px;
+  padding: 12px 51px;
+  margin: 0 auto;
+  margin-bottom: 124px;
+  background-color: var(--transparent);
+  color: var(--main);
+  transition: border-color var(--transition);
+  &:hover {
+    background-color: var(--transparent);
+    border-color: var(--button-hover);
+  }
+}

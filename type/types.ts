@@ -19,6 +19,12 @@ export interface Car {
 
 export interface FilterParams {
   brand?: string;
-  price?: string;
-  mileage?: string;
+  rentalPrice?: string;
+  minMileage?: string;
+  maxMileage?: string;
+}
+
+export interface Option {
+  value: string;
+  label: string;
 }

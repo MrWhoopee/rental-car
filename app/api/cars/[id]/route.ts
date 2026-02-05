@@ -1,22 +1,28 @@
-import { api } from "../api";
+import { api } from "../../api";
 import { NextResponse, NextRequest } from "next/server";
-import { logErrorResponse } from "../_utils/utils";
+import { logErrorResponse } from "../../_utils/utils";
 import { isAxiosError } from "axios";
 
-export async function GET(request: NextRequest) {
+interface Props {
+  params: Promise<{ id: string }>;
+}
+
+export async function GET(request: NextRequest, { params }: Props) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { id } = await params;
 
-    const params = Object.fromEntries(searchParams.entries());
-
-    const response = await api.get("/cars", { params });
+    const response = await api.get(`/cars/${id}`);
 
     return NextResponse.json(response.data);
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
+
       return NextResponse.json(
-        { error: error.message, response: error.response?.data },
+        {
+          error: error.message,
+          response: error.response?.data,
+        },
         { status: error.response?.status || 500 },
       );
     }

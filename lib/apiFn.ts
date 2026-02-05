@@ -9,16 +9,16 @@ interface CarsResponse {
 }
 
 export async function getCars(
-  page: number,
+  page: number = 1,
   filter?: FilterParams,
 ): Promise<CarsResponse> {
-  const response = await apiNext.get("/cars", {
-    params: {
-      page,
-      filter,
-    },
-  });
-  return response.data;
+  const params = {
+    page,
+    ...filter,
+  };
+
+  const { data } = await apiNext.get<CarsResponse>("/cars", { params });
+  return data;
 }
 
 export async function getBrands(): Promise<string[]> {

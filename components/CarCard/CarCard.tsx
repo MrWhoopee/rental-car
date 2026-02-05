@@ -2,18 +2,19 @@ import { Car } from "@/type/types";
 import Image from "next/image";
 import css from "./CarCard.module.css";
 import { useRouter } from "next/navigation";
-
+import { formatMileage } from "@/lib/utils/formatters";
 export default function CarCard({ car }: { car: Car }) {
-  const description = car.address.split(",");
+  const address = car.address.split(",");
   const router = useRouter();
   return (
     <div className={css.card}>
       <span className={css.heart}>
         <svg className={css.heartIcon} width="16" height="16">
-          <use href="/heart.svg"></use>
+          <use href="/sprite.svg#heart"></use>
         </svg>
       </span>
       <Image
+        priority
         className={css.img}
         src={car.img}
         alt={car.description}
@@ -27,9 +28,9 @@ export default function CarCard({ car }: { car: Car }) {
         <p>${car.rentalPrice}</p>
       </div>
       <p className={css.description}>
-        {`${description[description.length - 1]} | ${description[description.length - 2]} | ${car.rentalCompany} | `}
+        {`${address[address.length - 2]} | ${address[address.length - 1]} | ${car.rentalCompany} | `}
         <br />
-        {`${car.type} | ${car.mileage} `}
+        {`${car.type} | ${formatMileage(car.mileage)} km`}
       </p>
       <button
         className={css.button}

@@ -11,6 +11,12 @@
   z-index: 2;
   cursor: pointer;
   display: flex;
+  fill: var(--badges);
+  transition: fill var(--transition);
+}
+
+.heart:hover {
+  fill: var(--button-hover);
 }
 
 .img {
@@ -38,9 +44,12 @@
   font-size: 12px;
   line-height: 1.33333;
   color: var(--gray);
-  margin-bottom: 28px;
+  /* коли більше тектсу виштовхує кнопку */
+  /* margin-bottom: 28px; */
 }
 
 .button {
+  position: absolute;
+  bottom: 0;
   width: 100%;
 }
