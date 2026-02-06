@@ -9,6 +9,7 @@ import { getBrands } from "@/lib/apiFn";
 import { useCarStore } from "@/store/useCarStore";
 import css from "./SearchForm.module.css";
 import { customStyles } from "./selectStyles";
+import { parseSearchParams } from "@/lib/filters";
 
 interface Option {
   value: string;
@@ -69,12 +70,12 @@ function SearchFormContent() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newFilters = {
-      brand: brand?.value || undefined,
-      rentalPrice: price?.value || undefined,
-      minMileage: mileageFrom || undefined,
-      maxMileage: mileageTo || undefined,
-    };
+    const newFilters = parseSearchParams({
+      brand: brand?.value,
+      rentalPrice: price?.value,
+      minMileage: mileageFrom,
+      maxMileage: mileageTo,
+    });
 
     const params = new URLSearchParams();
     if (newFilters.brand) params.set("brand", newFilters.brand);
