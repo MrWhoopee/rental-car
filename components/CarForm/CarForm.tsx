@@ -39,7 +39,6 @@ const initialValues: OrderFormValues = {
   comment: "",
 };
 
-// 2. Оптимізований DatePicker
 const DatePickerField = ({
   name,
   placeholder,
